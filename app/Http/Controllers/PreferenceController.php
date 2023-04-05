@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use App\Traits\HttpResponses;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Preference;
@@ -11,6 +12,7 @@ use App\Http\Resources\PreferencesResource;
 
 class PreferenceController extends Controller
 {
+    use HttpResponses;
     /**
      * Display a listing of the resource.
      */
@@ -39,30 +41,36 @@ class PreferenceController extends Controller
      */
     public function show(Preference $preference)
     {
-        return new PreferencesResource($preference);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        return $this->isNotAuthorized($preference)? $this->isNotAuthorized($preference): new PreferencesResource($preference);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Preference $preference )
     {
-        //
+        if(Auth::user()->id!==$preference->user_id){
+            return $this->error('','You are not authorized to make this request',403);
+        }
+
+        $preference->update($request->all());
+
+        return new PreferencesResource($preference);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Preference $preference)
     {
-        //
+        
+        return $this->isNotAuthorized($preference)? $this->isNotAuthorized($preference): $preference->delete();
+        return response(null,204);
+    }
+    private function isNotAuthorized($preference)
+    {
+        if(Auth::user()->id!==$preference->user_id){
+            return $this->error('','You are not authorized to make this request',403);
+        }
     }
 }
