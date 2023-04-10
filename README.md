@@ -9,11 +9,11 @@
 
 ## About Laravel
 
-Here is the about the project,
-
 I made three endpoints login, register and preferences
 
 I used SQLite as a database.
+
+## Steps to run the docker
 
 Update the working directory and volumes address in the docker-compose.yml 
 
