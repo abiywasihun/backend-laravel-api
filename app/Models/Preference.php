@@ -11,7 +11,7 @@ class Preference extends Model
 
 
     protected $fillable=[
-        'user_id','name'
+        'user_id','name','type'
     ];
 
     public function user()

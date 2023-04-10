@@ -26,14 +26,18 @@ class PreferenceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePreferenceRequest $request)
+    public function store(Request $request)
     {
-        $request->validated($request->all());
-        $preference=Preference::create([
-            'user_id'=>Auth::user()->id,
-            'name'=>$request->name,
-        ]);
-        return new PreferencesResource($preference);
+        $data = $request->all();
+
+        foreach ($data as $item) {
+            Preference::create([
+                'user_id' => Auth::user()->id,
+                'name' => $item['name'],
+                'type' => $item['type'],
+            ]);
+        }
+        return response()->json($data);
     }
 
     /**
