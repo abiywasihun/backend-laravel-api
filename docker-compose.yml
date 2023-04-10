@@ -1,20 +1,30 @@
 version: '3'
 
 services:
-  web:
-    build: .
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: php-app
+    container_name: php-app-container
+    restart: unless-stopped
+    tty: true
+    environment:
+      APP_NAME: Laravel
+      APP_ENV: local
+      APP_DEBUG: true
+      APP_URL: http://localhost
+      DB_CONNECTION: sqlite
+      
+    working_dir: /var/www/html
+      
     ports:
-      - "8080:80"
+      - "8000:8000"
+      
     volumes:
       - ./:/var/www/html
-    depends_on:
-      - db
-  db:
-    image: mysql:5.7
-    volumes:
-      - db-data:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: example
-
+      - ./php.ini:/usr/local/etc/php/php.ini
+      - ./path/to/your/database-file.sqlite:/var/www/html/database/database.sqlite
+      
 volumes:
-  db-data:
+  dbdata:
