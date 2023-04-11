@@ -20,4 +20,4 @@ Update the working directory and volumes address in the docker-compose.yml
 Run the following command to start your Laravel application on Docker:
 ## `docker-compose up -d --build`
 
-After running the command, you should be able to access the Laravel welcome page by visiting http://localhost:8000 on your local machine.
+After running the command, you should be able to access the Laravel page by visiting http://localhost:8000 on your local machine.
